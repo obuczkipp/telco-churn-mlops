@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * 1"   # weekly retrain + monitoring run, Mondays 05:00 UTC
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check src tests
+      - name: Unit tests
+        run: pytest -q
+
+  pipeline:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e ".[tracking]"
+      - name: Run full pipeline (download, stats, train, decision, monitoring)
+        run: python -m churn.pipeline all
+      - name: Quality gate - fail if the model is worse than the agreed minimum
+        run: |
+          python - <<'EOF'
+          import json, sys
+          m = json.load(open("reports/metrics.json"))
+          best = f"{m['selected_model']} (calibrated)"
+          auc = m["test"][best]["roc_auc"]["estimate"]
+          ece = m["test"][best]["ece"]["estimate"]
+          print(f"test AUC={auc:.3f}  ECE={ece:.3f}")
+          if auc < 0.80 or ece > 0.05:
+              sys.exit("Quality gate failed")
+          mon = json.load(open("reports/monitoring.json"))
+          if mon["A_no_drift"]["status"] != "OK":
+              sys.exit("Monitoring raised a false alarm on the undrifted batch")
+          EOF
+      - name: Batch scoring smoke test
+        run: |
+          python -c "import pandas as pd; pd.read_csv('data/raw/telco_churn.csv').drop(columns='Churn').head(200).to_csv('new_customers.csv', index=False)"
+          python -m churn.pipeline score --input new_customers.csv --output scored.csv
+          head -5 scored.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reports-and-model
+          path: |
+            reports/
+            models/
+            scored.csv

@@ -1,0 +1,50 @@
+# Central configuration. Every script reads this file, so experiments are
+# reproducible and parameters are never hard-coded in the code.
+
+data:
+  # Original Kaggle dataset: https://www.kaggle.com/datasets/blastchar/telco-customer-churn
+  # Kaggle mirrors IBM's sample data; we download from IBM's GitHub so that CI
+  # does not need Kaggle API credentials. The file is byte-identical in content.
+  url: https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv
+  raw_path: data/raw/telco_churn.csv
+  target: Churn
+  id_column: customerID
+
+split:
+  test_size: 0.20          # held-out set, touched only once for final evaluation
+  random_state: 42
+
+cv:
+  n_splits: 5              # stratified K-fold on the training set for model selection
+
+stats:
+  alpha: 0.05              # family-wise significance level (after FDR correction)
+  n_bootstrap: 1000        # resamples for confidence intervals of test metrics
+
+model:
+  calibration: isotonic    # isotonic | sigmoid  (probability calibration method)
+
+business:
+  # Simple, transparent retention economics. Replace with real figures.
+  horizon_months: 12       # how many months of revenue a "saved" customer is worth
+  offer_cost: 60.0         # cost of the retention offer (e.g. discount), paid when sent
+  contact_cost: 5.0        # cost of contacting a customer (call centre / SMS)
+  save_rate: 0.30          # P(customer stays | would have churned, received offer)
+  save_rate_grid: [0.10, 0.20, 0.30, 0.40, 0.50]   # sensitivity analysis
+
+monitoring:
+  psi_bins: 10
+  psi_warn: 0.10           # 0.10-0.25: moderate shift, investigate
+  psi_alert: 0.25          # >0.25: major shift, consider retraining
+  auc_drop_alert: 0.05     # alert if live AUC falls more than this below baseline
+
+tracking:
+  enabled: true
+  uri: sqlite:///mlflow.db
+  experiment: telco-churn
+  registered_model: telco-churn-classifier
+
+paths:
+  models: models
+  reports: reports
+  figures: reports/figures

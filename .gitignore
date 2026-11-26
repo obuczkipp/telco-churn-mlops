@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Data and artefacts are reproducible: run `make all`
+data/
+models/
+mlruns/
+mlartifacts/
+mlflow.db
+scored.csv
+new_customers.csv
+
+.DS_Store
+.ipynb_checkpoints/

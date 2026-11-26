@@ -1,0 +1,32 @@
+{
+  "A_no_drift": {
+    "status": "OK",
+    "performance": {
+      "live_auc": 0.8454416285618331,
+      "baseline_auc": 0.8454416285618331,
+      "auc_drop": 0.0,
+      "mean_predicted": 0.26653353013455733,
+      "observed_churn": 0.2654364797728886,
+      "ece": 0.019363217458041145,
+      "prediction_psi": 0.0070890006550203815
+    },
+    "flagged": []
+  },
+  "B_simulated_drift": {
+    "status": "ALERT",
+    "performance": {
+      "live_auc": 0.8093350349807573,
+      "baseline_auc": 0.8454416285618331,
+      "auc_drop": 0.03610659358107582,
+      "mean_predicted": 0.36813001335636414,
+      "observed_churn": 0.3534421575585522,
+      "ece": 0.04416524253076724,
+      "prediction_psi": 0.1583059148626588
+    },
+    "flagged": [
+      "tenure",
+      "TotalCharges",
+      "Contract"
+    ]
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "selected_model": "logistic_regression",
+  "best_params": {
+    "model__C": 10.0
+  },
+  "cv": [
+    {
+      "model": "baseline_prior",
+      "roc_auc_mean": 0.5,
+      "roc_auc_std": 0.0,
+      "pr_auc_mean": 0.2653532460941748,
+      "pr_auc_std": 0.00010537167400405242,
+      "brier_mean": 0.19494090587420038,
+      "brier_std": 4.945862385921352e-05,
+      "log_loss_mean": 0.5785821114544571,
+      "log_loss_std": 0.0001073244070901523
+    },
+    {
+      "model": "logistic_regression",
+      "roc_auc_mean": 0.8495952018531181,
+      "roc_auc_std": 0.012854933104813573,
+      "pr_auc_mean": 0.6710394291402638,
+      "pr_auc_std": 0.016448982489770374,
+      "brier_mean": 0.13325258161427017,
+      "brier_std": 0.005217999702168558,
+      "log_loss_mean": 0.41119056058977427,
+      "log_loss_std": 0.012404687698736667
+    },
+    {
+      "model": "gradient_boosting",
+      "roc_auc_mean": 0.8476085883952589,
+      "roc_auc_std": 0.012581448553073938,
+      "pr_auc_mean": 0.662272201209217,
+      "pr_auc_std": 0.027114224983485518,
+      "brier_mean": 0.1345834529326067,
+      "brier_std": 0.006162219274785188,
+      "log_loss_mean": 0.4141305666473191,
+      "log_loss_std": 0.014217185188311134
+    }
+  ],
+  "test": {
+    "logistic_regression (calibrated)": {
+      "roc_auc": {
+        "estimate": 0.8454416285618331,
+        "ci_low": 0.8240263246273477,
+        "ci_high": 0.8654133728590251
+      },
+      "pr_auc": {
+        "estimate": 0.6556291794472714,
+        "ci_low": 0.6139311468552762,
+        "ci_high": 0.6974448450466778
+      },
+      "brier": {
+        "estimate": 0.13560050630997614,
+        "ci_low": 0.12697743486816282,
+        "ci_high": 0.1445283189777191
+      },
+      "ece": {
+        "estimate": 0.019363217458041145,
+        "ci_low": 0.015654411260518617,
+        "ci_high": 0.044026486869936494
+      },
+      "log_loss": {
+        "estimate": 0.41507922326717955
+      }
+    },
+    "logistic_regression (raw)": {
+      "roc_auc": {
+        "estimate": 0.8463432276731508,
+        "ci_low": 0.8246604471828257,
+        "ci_high": 0.8662618189568317
+      },
+      "pr_auc": {
+        "estimate": 0.6611648223466982,
+        "ci_low": 0.6197742827593159,
+        "ci_high": 0.7032704007777508
+      },
+      "brier": {
+        "estimate": 0.13531621013154582,
+        "ci_low": 0.12685439119057842,
+        "ci_high": 0.14430439453010738
+      },
+      "ece": {
+        "estimate": 0.019994943601364973,
+        "ci_low": 0.017581465331276608,
+        "ci_high": 0.044958864083124564
+      },
+      "log_loss": {
+        "estimate": 0.4139101663968367
+      }
+    },
+    "gradient_boosting (calibrated)": {
+      "roc_auc": {
+        "estimate": 0.8463367692267948,
+        "ci_low": 0.8241211992043195,
+        "ci_high": 0.8661682683613628
+      },
+      "pr_auc": {
+        "estimate": 0.661341461711041,
+        "ci_low": 0.6194915209871498,
+        "ci_high": 0.7060496941045387
+      },
+      "brier": {
+        "estimate": 0.13482868001282122,
+        "ci_low": 0.12623541373384498,
+        "ci_high": 0.1439739795031562
+      },
+      "ece": {
+        "estimate": 0.021313342272967488,
+        "ci_low": 0.01776067641356844,
+        "ci_high": 0.04442821648856959
+      },
+      "log_loss": {
+        "estimate": 0.43612767156191456
+      }
+    }
+  },
+  "auc_comparison": {
+    "diff": -0.0008951406649616578,
+    "ci_low": -0.006974508512232533,
+    "ci_high": 0.005622271306414565,
+    "p_value": 0.808
+  },
+  "policies": [
+    {
+      "policy": "Contact nobody",
+      "contacted": 0,
+      "share_contacted": 0.0,
+      "churners_reached": 0,
+      "recall": 0.0,
+      "precision": 0.0,
+      "net_value": 0.0,
+      "net_value_per_1000_customers": 0.0
+    },
+    {
+      "policy": "Contact everybody",
+      "contacted": 1409,
+      "share_contacted": 1.0,
+      "churners_reached": 374,
+      "recall": 1.0,
+      "precision": 0.2654364797728886,
+      "net_value": 6388.639999999998,
+      "net_value_per_1000_customers": 4534.166075230658
+    },
+    {
+      "policy": "Fixed threshold p > 0.5",
+      "contacted": 304,
+      "share_contacted": 0.2157558552164656,
+      "churners_reached": 198,
+      "recall": 0.5294117647058824,
+      "precision": 0.6513157894736842,
+      "net_value": 35464.53999999999,
+      "net_value_per_1000_customers": 25170.007097232075
+    },
+    {
+      "policy": "Top 20% by churn probability",
+      "contacted": 283,
+      "share_contacted": 0.20085166784953867,
+      "churners_reached": 188,
+      "recall": 0.5026737967914439,
+      "precision": 0.6643109540636042,
+      "net_value": 34011.64,
+      "net_value_per_1000_customers": 24138.850248403123
+    },
+    {
+      "policy": "Expected-value rule (EV > 0)",
+      "contacted": 545,
+      "share_contacted": 0.38679914833215046,
+      "churners_reached": 272,
+      "recall": 0.7272727272727273,
+      "precision": 0.4990825688073395,
+      "net_value": 44340.73999999999,
+      "net_value_per_1000_customers": 31469.6522356281
+    }
+  ]
+}
